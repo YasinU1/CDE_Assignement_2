@@ -10,7 +10,7 @@ import socket
 #Code
 def Main():
     host = '127.0.0.1'
-    port = 8000
+    port = 8989
     s = socket.socket()
 
     print("Welcome to Employment record centre!!!")
