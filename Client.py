@@ -59,6 +59,9 @@ def Main():
             #Needs to be done 
             #Add function to add data to a JSON file
             #Send data to SERVER
+            #Add Age
+            #Fix server error
+            #Input Validation
 
             continue_ = input("Would you like to add another status") #This can be made a lot pretty
             if continue_.upper() == "N":
