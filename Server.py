@@ -18,7 +18,7 @@ def Main():
 
     s.listen(1)
     print("Employment Status server is running...")
-    print("machine can cannet on port 8000")
+    print("Machine can connect on port 8989")
     c, addr = s.accept()     #accepts connection
     print("Connection from: " + str(addr))
 
