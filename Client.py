@@ -95,7 +95,9 @@ def Main():
                 file_path = os.path.join(os.getcwd(), 'EmploymentRecords.json')
                 with open(file_path, 'r') as f:
                     records = json.load(f)
-            except (FileNotFoundError, json.JSONDecodeError):
+            except (FileNotFoundError, json.JSONDecodeError) as e:
+                # Detailed error message here for no records
+                print(f"Error occurred while trying to read records: {str(e)}")
                 print("No records found.")
                 continue
 
@@ -126,15 +128,20 @@ def Main():
                     file_path = os.path.join(os.getcwd(), 'EmploymentRecords.json')
                     with open(file_path, 'r') as f:
                         people = json.load(f)
-                except (FileNotFoundError, json.JSONDecodeError):
+                except (FileNotFoundError, json.JSONDecodeError) as e:
+                    print(f"Error occurred while trying to read records: {str(e)}")
                     people = []
 
 
                 people.append(person.to_dict())
 
-                with open('EmploymentRecords.json', 'w') as f:
-                    json.dump(people, f)
-                    s.send("Data added to JSON".encode('utf-8'))  # Notify the server about the addition
+                # Try/except block for file write operation
+                try:
+                    with open('EmploymentRecords.json', 'w') as f:
+                        json.dump(people, f)
+                        s.send("Data added to JSON".encode('utf-8')) # Notify the server about the addition
+                except Exception as e:
+                    print(f"Error occurred while trying to write to file: {str(e)}")
 
                 continue_ = input("Would you like to add another status: ") 
                 if continue_.upper() == "N":
