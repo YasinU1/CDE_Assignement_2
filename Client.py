@@ -151,14 +151,32 @@ def Main():
 
     s.close() 
 
+def search_person(records):
+    search_term = input("Enter the first name of the person to search for: ")
+    found_records = [record for record in records if record['First name'].lower() == search_term.lower()]
+    
+    if found_records:
+        table = PrettyTable(['First Name', 'Last Name', 'Age', 'Employment Status'])
+        for record in found_records:
+            table.add_row([record['First name'], record['Last name'], record['Age'], record['Employment Status']])
+        print(table)
+    else:
+        print("No person found with the given first name.")
+        # Instead of exiting, we go back to the display info section
+        choice = input("Press Enter to go back to the displayed info section or type 'exit' to return to the menu: ")
+        if choice.lower() != "exit":
+            # Display data in a table format again
+            table = PrettyTable(['First Name', 'Last Name', 'Age', 'Employment Status'])
+            for record in records:
+                table.add_row([record['First name'], record['Last name'], record['Age'], record['Employment Status']])
+            print(table)
+
 if __name__ == '__main__':
     Main()
-    
+
+
     #Needs to be done 
-    #Send data to SERVER
-    #Add Age
-    #Fix server error
-    #Input Validation
+    #GUI
 
     # '''
     # s = socket.socket()
