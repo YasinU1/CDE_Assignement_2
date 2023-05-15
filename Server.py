@@ -5,23 +5,10 @@
 
 #Modules 
 import socket
-
-#Variables&Constants 
+import threading  # Imported for multi-threading
 
 #Code
-def Main():
-    host = '127.0.0.1'
-    port = 8989
-
-    s = socket.socket()  # Creates a new socket object
-    s.bind((host,port))  # Binds the socket to a specific address and port
-
-    s.listen(1)  # Configures the socket to accept connections
-    print("Employment Status server is running...")
-    print("Machine can connect on port 8989")
-    c, addr = s.accept()     # Waits for a client to connect and then accepts the connection
-    print("Connection from: " + str(addr))
-
+def handle_client(c):
     while True:
         data = c.recv(1024).decode('utf-8')     # Receives data from the client
         if not data: 
@@ -37,6 +24,25 @@ def Main():
             c.send(data.encode('utf-8'))    # Sends the uppercase data back to the client
 
     c.close()  # Closes the connection to the client
+
+def Main():
+    host = '127.0.0.1'
+    port = 8989
+
+    s = socket.socket()  # Creates a new socket object
+    s.bind((host,port))  # Binds the socket to a specific address and port
+
+    s.listen(1)  # Configures the socket to accept connections
+    print("Employment Status server is running...")
+    print("Machine can connect on port 8989")
+
+    while True:
+        c, addr = s.accept()     # Waits for a client to connect and then accepts the connection
+        print("Connection from: " + str(addr))
+
+        # Start a new thread to handle the client
+        client_thread = threading.Thread(target=handle_client, args=(c,))
+        client_thread.start()
 
 if __name__ == '__main__':
     Main()
