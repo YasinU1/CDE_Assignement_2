@@ -5,20 +5,48 @@
 #Modules 
 import socket
 import json
-
+import re  # Regular Expression module for input validation
+from prettytable import PrettyTable
+import os  # Added for file handling in a cross-platform manner
 
 class Person:                   
-    def __init__(self):         #class for inputted user.
-        self.fname = input("Your first name: ")
-        self.sname = input("Your last name: ")
-        self.age = input("Your Age: ")
-        self.eRecord = input("Your employment status, y or n: ")
-    
-    def displayPerson(self):    #display user inputs.
-        print("First name:", self.fname, "Last name:", self.sname, "Age:", self.age, "Employment Status", self.eRecord)
+    def __init__(self):         # Class for inputted user.
+        # Input validation for first name: allows only letters and it should not be empty.
+        while True:
+            self.fname = input("Your first name: ")
+            if re.match("^[A-Za-z]*$", self.fname) and self.fname:
+                break
+            else:
+                print("Invalid input. Please enter a valid first name.")
 
+        # Input validation for last name: allows only letters and it should not be empty.
+        while True:
+            self.sname = input("Your last name: ")
+            if re.match("^[A-Za-z]*$", self.sname) and self.sname:
+                break
+            else:
+                print("Invalid input. Please enter a valid last name.")
 
-    def to_dict(self):   #return dictionary representation of person
+        # Input validation for age: allows only numbers and age should be between 1 to 120.
+        while True:
+            self.age = input("Your Age: ")
+            if re.match("^[1-9][0-9]?$|^120$", self.age):
+                break
+            else:
+                print("Invalid input. Please enter a valid age between 1 to 120.")
+
+        # Input validation for employment status: allows only 'y' or 'n'.
+        while True:
+            self.eRecord = input("Your employment status, y or n: ")
+            if re.match("^[ynYN]$", self.eRecord):
+                break
+            else:
+                print("Invalid input. Please enter 'y' for yes or 'n' for no.")
+
+    def displayPerson(self):    # Display user inputs.
+        print("\nFirst name:", self.fname, "\nLast name:", self.sname, "\nAge:", self.age, "\nEmployment Status", self.eRecord)
+
+    def to_dict(self):   # Return dictionary representation of person
         return {
             'First name': self.fname,
             'Last name': self.sname,
