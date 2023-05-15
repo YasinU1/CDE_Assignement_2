@@ -122,19 +122,23 @@ def Main():
                 
                 # save data to json file
                 try:
-                    with open('EmploymentRecords.json', 'r') as f:
+                # Making the path to the file OS agnostic
+                    file_path = os.path.join(os.getcwd(), 'EmploymentRecords.json')
+                    with open(file_path, 'r') as f:
                         people = json.load(f)
                 except (FileNotFoundError, json.JSONDecodeError):
                     people = []
+
 
                 people.append(person.to_dict())
 
                 with open('EmploymentRecords.json', 'w') as f:
                     json.dump(people, f)
+                    s.send("Data added to JSON".encode('utf-8'))  # Notify the server about the addition
+
                 continue_ = input("Would you like to add another status: ") 
                 if continue_.upper() == "N":
                     break
-
         # ****************************************************************  
 
         #USER EXITS PAGE
