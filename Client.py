@@ -54,7 +54,6 @@ class Person:
             'Employment Status': self.eRecord
         }
 
-
 #Variables&Constants 
 
 #Code
@@ -62,35 +61,60 @@ def Main():
     host = '127.0.0.1'
     port = 8989
     s = socket.socket()
+    
+    try:  # Try to connect to the server
+        s.connect((host,port))
+        print("\nConnected to the server successfully.")
+    except socket.error as ERROR:  # If the server is not connected, it shows an error message and ends the program
+        print("Error occurred while connecting to the server: ", ERROR)
+        return
 
     while True:
         print("\nWelcome to Employment record centre!!!")
+        # Input validation for the main menu: only allows 1, 2 or 3.
+        while True:
+            menu = input(""" 
+            Please select an Option:
+            1 = Display employment records
+            2 = Add data to employment records
+            3 = Exit
+            """)
+            # Here we use the regex pattern to check if the input is valid (1, 2, or 3)
+            if re.match("^[123]$", menu):
+                menu = int(menu)  # Convert the validated input to integer
+                break
+            else:
+                print("Invalid input. Please enter 1, 2 or 3.")
 
-        menu = int(input(""" 
-        Please select an Option:
-        1 = Display employment records
-        2 = Add data to employment records
-        3 = Exit
-        """))
 
         #USER IS DISPLAYED WITH DATA
         if menu == 1:
-            print("NOT ready sorry")
-        
+            # Display employment records
+            try:
+                # Making the path to the file OS agnostic
+                file_path = os.path.join(os.getcwd(), 'EmploymentRecords.json')
+                with open(file_path, 'r') as f:
+                    records = json.load(f)
+            except (FileNotFoundError, json.JSONDecodeError):
+                print("No records found.")
+                continue
+
+            # Display data in a table format
+            table = PrettyTable(['First Name', 'Last Name', 'Age', 'Employment Status'])
+            for record in records:
+                table.add_row([record['First name'], record['Last name'], record['Age'], record['Employment Status']])
+            print(table)
+
+            # Add an option to search for a person after displaying records
+            choice = input("Here is your displayed info, type 'search' to search for a person, or hit Enter to return to the menu: ")
+            if choice.lower() == "search":
+                search_person(records)
+            elif choice.lower() == "exit":
+                continue      
         # ****************************************************************
 
         #USER INPUTS DATA
         elif menu == 2:
-            s = socket.socket()
-            try:
-                s.connect((host,port))     #connects to server 
-                print("  ")
-                print("You have connected to the server.")
-
-            except socket.error as ERROR:
-                print(ERROR, "Occured")   
-                continue
-                
             while True:
                 print("To enter your employment records please enter the information")  
                 person = Person()
