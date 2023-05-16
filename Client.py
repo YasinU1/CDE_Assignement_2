@@ -92,7 +92,7 @@ def Main():
             # Display employment records
             try:
                 # Making the path to the file OS agnostic
-                file_path = os.path.join(os.getcwd(), 'EmploymentRecords.json')
+                file_path = os.path.join(os.getcwd(), 'CDE_Assignement_2/EmploymentRecords.json')
                 with open(file_path, 'r') as f:
                     records = json.load(f)
             except (FileNotFoundError, json.JSONDecodeError) as e:
@@ -125,7 +125,7 @@ def Main():
                 # save data to json file
                 try:
                 # Making the path to the file OS agnostic
-                    file_path = os.path.join(os.getcwd(), 'EmploymentRecords.json')
+                    file_path = os.path.join(os.getcwd(), 'CDE_Assignement_2/EmploymentRecords.json')
                     with open(file_path, 'r') as f:
                         people = json.load(f)
                 except (FileNotFoundError, json.JSONDecodeError) as e:
@@ -137,7 +137,7 @@ def Main():
 
                 # Try/except block for file write operation
                 try:
-                    with open('EmploymentRecords.json', 'w') as f:
+                    with open('CDE_Assignement_2/EmploymentRecords.json', 'w') as f:
                         json.dump(people, f)
                         s.send("Data added to JSON".encode('utf-8')) # Notify the server about the addition
                 except Exception as e:
