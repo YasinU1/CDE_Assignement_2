@@ -150,7 +150,7 @@ def Main():
                 except Exception as e:
                     print(f"Error occurred while trying to write to file: {str(e)}")
 
-                continue_ = input("Would you like to add another status: ") 
+                continue_ = input("Would you like to add another status: y or n ") 
                 if continue_.upper() == "N":
                     break
         # ****************************************************************  
