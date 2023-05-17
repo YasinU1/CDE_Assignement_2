@@ -7,7 +7,6 @@ import socket
 import json
 import re  # Regular Expression module for input validation
 from prettytable import PrettyTable
-import os  # Added for file handling in a cross-platform manner
 
 class Person:                   
     def __init__(self):         # Class for inputted user.
@@ -92,8 +91,7 @@ def Main():
             # Display employment records
             try:
                 # Making the path to the file OS agnostic
-                file_path = os.path.join(os.getcwd(), 'CDE_Assignement_2/EmploymentRecords.json')
-                with open(file_path, 'r') as f:
+                with open('EmploymentRecords.json', 'r') as f:
                     records = json.load(f)
             except (FileNotFoundError, json.JSONDecodeError) as e:
                 # Detailed error message here for no records
@@ -125,8 +123,7 @@ def Main():
                 # save data to json file
                 try:
                 # Making the path to the file OS agnostic
-                    file_path = os.path.join(os.getcwd(), 'CDE_Assignement_2/EmploymentRecords.json')
-                    with open(file_path, 'r') as f:
+                    with open('EmploymentRecords.json', 'r') as f:
                         people = json.load(f)
                 except (FileNotFoundError, json.JSONDecodeError) as e:
                     print(f"Error occurred while trying to read records: {str(e)}")
@@ -137,7 +134,7 @@ def Main():
 
                 # Try/except block for file write operation
                 try:
-                    with open('CDE_Assignement_2/EmploymentRecords.json', 'w') as f:
+                    with open('EmploymentRecords.json', 'w') as f:
                         json.dump(people, f)
                         s.send("Data added to JSON".encode('utf-8')) # Notify the server about the addition
                 except Exception as e:
