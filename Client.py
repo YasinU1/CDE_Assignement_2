@@ -8,6 +8,7 @@ import json #Module to make handling JSON easy.
 import re  #REGEX module for input validation to create parameters
 from prettytable import PrettyTable #table module to nicely present our JSON data
 
+#Classes and Functions
 class Person:                   
     def __init__(self):         # Class for inputted user.
         # Input validation for first name using REGEX: allows only letters and it should not be empty or have any spaces.
@@ -55,8 +56,37 @@ class Person:
             'Employment Status': self.employment_record
         }
 
+# Function used in menu option 1 to search person within records
+def search_person_within_records(records):
+    while True:
+        # Prompts the user to search using the exact first name of the person
+        search_term = input("Enter the first name of the person to search for or 'exit' to return to display all records: ")
+        #Checks if user has entered exit to break the loop, however if first name begins with exit it breaks.
+        if search_term.lower() == "exit":
+            break
+        #For loop and if statment to search for first name, 
+        found_records = []
+        for record in records:
+            if record['First name'].lower() == search_term.lower():
+                found_records.append(record)
+        # Checks if any of the same records of first name are found, if yes, displays pretty table of matching results, similar to main display table.
+        if found_records:
+            #Creates table using the inputs as column titles.
+            table = PrettyTable(['First Name', 'Last Name', 'Age', 'Employment Status'])
+            #For loop to add each found result in a table from the JSON file
+            for record in found_records:
+                table.add_row([record['First name'], record['Last name'], record['Age'], record['Employment Status']])
+            print(table)
+        else:
+            #If no result is found prints this message
+            print("No person found with the given first name.")
+            continue
 
-#Code
+# ****************************************************************  
+
+        #MAIN CLIENT FUNCTION CODE
+
+# ****************************************************************  
 def Main():
     #Same host port and socket code as server to create that connection
     host = '127.0.0.1'
@@ -129,6 +159,7 @@ def Main():
                 #Prompts the user to type search to begin using the search function or exit back to the menu
                 search_choice = input("Type 'search' to search for a person, or type 'exit' to return to the menu: ")
                 if search_choice.lower() == "search":
+                    #Calls the function above, to search within the records
                     search_person_within_records(records)
                 elif search_choice.lower() == "exit":
                     break
@@ -192,31 +223,8 @@ def Main():
     #Closes socket
     s.close() 
 
-# Function used in menu option 1 to search person within records
-def search_person_within_records(records):
-    while True:
-        # Prompts the user to search using the exact first name of the person
-        search_term = input("Enter the first name of the person to search for or 'exit' to return to display all records: ")
-        #Checks if user has entered exit to break the loop, however if first name begins with exit it breaks.
-        if search_term.lower() == "exit":
-            break
-        found_records = [record for record in records if record['First name'].lower() == search_term.lower()]
-        # Checks if any of the same records of first name are found, if yes, displays pretty table of matching results, similar to main display table.
-        if found_records:
-            #Creates table using the inputs as column titles.
-            table = PrettyTable(['First Name', 'Last Name', 'Age', 'Employment Status'])
-            #For loop to add each found result in a table from the JSON file
-            for record in found_records:
-                table.add_row([record['First name'], record['Last name'], record['Age'], record['Employment Status']])
-            print(table)
-        else:
-            #If no result is found prints this message
-            print("No person found with the given first name.")
-            continue
-
 if __name__ == '__main__':
     Main()
-
 
 #TO DO LIST
 #Refactoring and Commenting Code
