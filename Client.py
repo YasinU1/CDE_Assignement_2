@@ -118,17 +118,27 @@ def Main():
             while True:
                 print("To enter your employment records please enter the information")  
                 person = Person()
-                person.displayPerson()
+                person_dict = person.to_dict()
+
+                # Display the new record in a pretty table for confirmation
+                table = PrettyTable(['First Name', 'Last Name', 'Age', 'Employment Status'])
+                table.add_row([person_dict['First name'], person_dict['Last name'], person_dict['Age'], person_dict['Employment Status']])
+                print("\nHere is your new record:")
+                print(table)
+
+                confirm = input("Is this correct? (y/n): ")
+                if confirm.lower() not in ['y', 'yes']:
+                    print("Please add the record again.")
+                    continue
                 
                 # save data to json file
                 try:
-                # Making the path to the file OS agnostic
+                    # Making the path to the file OS agnostic
                     with open('EmploymentRecords.json', 'r') as f:
                         people = json.load(f)
                 except (FileNotFoundError, json.JSONDecodeError) as e:
                     print(f"Error occurred while trying to read records: {str(e)}")
                     people = []
-
 
                 people.append(person.to_dict())
 
