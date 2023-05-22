@@ -14,7 +14,9 @@ from kivy.properties import StringProperty
 from kivy.graphics import Color, Rectangle
 import prettytable
 
-# Home screen
+# ------------------------------------------------------------------------------------
+# USER OPTION 1 - SER WELCOME MENU
+# ------------------------------------------------------------------------------------
 class MainScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -69,14 +71,16 @@ class MainScreen(Screen):
 
     # Exits user from app
     def exit_app(self, instance):
-        self.stop()
+        App.get_running_app().stop()  # Stop the Kivy application
     
     def _update_rect(self, instance, value):
         # Update the size and position of the rectangle
         self.rect.size = instance.size
         self.rect.pos = instance.pos
 
-##### Option 1 - Read to JSON
+# ------------------------------------------------------------------------------------
+# USER OPTION 1 - USER CAN DISPLAY AND SEARCH WITHIN JSON DATA
+# ------------------------------------------------------------------------------------
 class ReadScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -216,7 +220,9 @@ class ReadScreen(Screen):
             # Clear the input values
             self.inputs['search'].text = ''
 
-# Option 2 - Write to JSON
+# ------------------------------------------------------------------------------------
+# USER OPTION 2 - USER INPUTS DATA
+# ------------------------------------------------------------------------------------
 class WriteScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -260,14 +266,14 @@ class WriteScreen(Screen):
         class RadioButton(ToggleButton):
             group = StringProperty('')
 
-        yes_option = RadioButton(state='down', group='my_group', size_hint=(None, None), height=30, width=30)
-        yes_label = Label(text='YES', size_hint=(0.30, None), height=30,  color=(0, 0, 0, 1), font_size=12)
+        no_option = RadioButton(state='down', group='my_group', size_hint=(None, None), height=30, width=30)
+        no_label = Label(text='NO', size_hint=(0.30, None), height=30,  color=(0, 0, 0, 1), font_size=12)
 
-        no_option = RadioButton(group='my_group', size_hint=(None, None), height=30, width=30)
-        no_label = Label(text='NO', size_hint=(0.30, None), height=30, color=(0, 0, 0, 1), font_size=12)
+        yes_option = RadioButton(group='my_group', size_hint=(None, None), height=30, width=30)
+        yes_label = Label(text='YES', size_hint=(0.30, None), height=30, color=(0, 0, 0, 1), font_size=12)
 
         # Store the reference to the 'status' input field
-        self.inputs['status'] = no_option
+        self.inputs['status'] = yes_option
 
         # Submit buttons
         anchor_layout_submit = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=140)
@@ -295,10 +301,10 @@ class WriteScreen(Screen):
         anchor_age.add_widget(age_container)
 
         status_container.add_widget(status_label)
-        status_container.add_widget(yes_label)
-        status_container.add_widget(yes_option)
         status_container.add_widget(no_label)
         status_container.add_widget(no_option)
+        status_container.add_widget(yes_label)
+        status_container.add_widget(yes_option)
         anchor_status.add_widget(status_container)
 
         buttonSub_container.add_widget(subBut)
@@ -350,9 +356,9 @@ class WriteScreen(Screen):
         self.rect.size = instance.size
         self.rect.pos = instance.pos
 
-
-
-######  Disaply uses inputs & Add to JSON file
+# --------------------------------------------------------------------------------------------------
+# USER OPTION 2 - DISPLAY USER WITH ENTERED INFORMATION BEFORE SUBMITTING
+# --------------------------------------------------------------------------------------------------
 class DisplayScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -381,7 +387,7 @@ class DisplayScreen(Screen):
         buttons_container = BoxLayout(orientation='horizontal', size_hint=(0.5, None), height=50, spacing=25)
         # Option 1 - YES
         yes_button = Button(text='YES')
-        yes_button.bind(on_press=self.write_screen)
+        yes_button.bind(on_press=self.Add_To_Json)
         # Option 2 - NO
         no_button = Button(text='NO')
         no_button.bind(on_press=self.write_screen)
@@ -401,13 +407,63 @@ class DisplayScreen(Screen):
         root.add_widget(anchor_button_layout)
         self.add_widget(root)
 
+    # Set the displayed data
     def set_data(self, first_name, last_name, age, status):
-        # Set the displayed data
         data = f"First Name: {first_name}\nLast Name: {last_name}\nAge: {age}\nStatus: {status}"
         self.data_label.text = data
 
     # Sends user to Write screen
     def write_screen(self, *args):
+        self.manager.current = 'write_screen'
+
+    # Sends user to Write screen
+    def Add_To_Json(self, *args):
+        # Get the data from the data box
+        displayed_data = self.data_label.text
+
+        # Extract the data
+        first_name = ''
+        last_name = ''
+        age = ''
+        status = ''
+        data_lines = displayed_data.split('\n')
+        for line in data_lines:
+            if line.startswith('First Name:'):
+                first_name = line.split(': ')[1]
+            elif line.startswith('Last Name:'):
+                last_name = line.split(': ')[1]
+            elif line.startswith('Age:'):
+                age = line.split(': ')[1]
+            elif line.startswith('Status:'):
+                status = line.split(': ')[1]
+
+        # Create a dictionary for the person's information
+        person = {
+            "First Name": first_name,
+            "Last Name": last_name,
+            "Age": age,
+            "Employment Status": status
+        }
+
+        # Load the existing records from the JSON file
+        try:
+            with open('EmploymentRecords.json', 'r') as f:
+                people = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            # If no records are found, start with an empty list
+            people = []
+
+        # Add the new person's information to the list of records
+        people.append(person)
+
+        # Write the updated records back to the JSON file
+        try:
+            with open('EmploymentRecords.json', 'w') as f:
+                json.dump(people, f)
+                print("Data added to JSON")
+        except Exception as e:
+            print(f"Error occurred while trying to write to file: {str(e)}")
+        
         self.manager.current = 'write_screen'
 
     def _update_rect(self, instance, value):
