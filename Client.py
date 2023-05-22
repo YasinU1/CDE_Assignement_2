@@ -2,7 +2,7 @@
 #Employment Status - Client 
 #Olivia McAndrew & Yasin Usman
 
-#Modules 
+#Modules
 import socket #Imported for creating the socket for client-server functionality
 import json #Module to make handling JSON easy.
 import re  #REGEX module for input validation to create parameters
@@ -11,14 +11,14 @@ from prettytable import PrettyTable #table module to nicely present our JSON dat
 #Classes and Functions
 class Person:                   
     def __init__(self):         # Class for inputted user.
+        print("-------------------- Please provide your details -------------------")
         # Input validation for first name using REGEX: allows only letters and it should not be empty or have any spaces.
         while True:
-            self.first_name = input("Your first name: ")
+            self.first_name = input("\nYour first name: ")
             if re.match("^[A-Za-z]*$", self.first_name) and self.first_name:
                 break
             else:
                 print("Invalid input. Please enter a valid first name.")
-
         # Input validation for last name using REGEX: allows only letters and it should not be empty or have any spaces.
         while True:
             self.surname = input("Your last name: ")
@@ -26,7 +26,6 @@ class Person:
                 break
             else:
                 print("Invalid input. Please enter a valid last name.")
-
         # Input validation for age using REGEX: allows only numbers and age should be between 1 to 120.
         while True:
             self.age = input("Your Age: ")
@@ -34,7 +33,6 @@ class Person:
                 break
             else:
                 print("Invalid input. Please enter a valid age between 1 to 100.")
-
         # Input validation for employment status using REGEX: allows only 'y' or 'n'.
         while True:
             self.employment_record = input("Your employment status, y or n: ")
@@ -45,7 +43,8 @@ class Person:
 
     # Display user inputs.
     def displayPerson(self):
-        print("\nFirst name:", self.first_name, "\nLast name:", self.surname, "\nAge:", self.age, "\nEmployment Status", self.employment_record)
+        print("\n------------------- Here is the user data provided ---------------------")
+        print("First name:", self.first_name, "\nLast name:", self.surname, "\nAge:", self.age, "\nEmployment Status", self.employment_record)
 
     # Return dictionary representation of person similar to JSON
     def to_dict(self):   
@@ -60,7 +59,7 @@ class Person:
 def search_person_within_records(records):
     while True:
         # Prompts the user to search using the exact first name of the person
-        search_term = input("Enter the first name of the person to search for or 'exit' to return to display all records: ")
+        search_term = input("\nEnter the first name of the person to search for or 'exit' to return to display all records: ")
         #Checks if user has entered exit to break the loop, however if first name begins with exit it breaks.
         if search_term.lower() == "exit":
             break
@@ -92,11 +91,10 @@ def Main():
     host = '127.0.0.1'
     port = 8989
     s = socket.socket()
-    
-    # Conenction to server
+    # Connection to server
     try: 
         s.connect((host,port))
-        print("\nConnected to the server successfully.")
+        print("\n---------------------- Connected to the server successfully! ----------------------")
     # If the server is not connected, it shows an error message and ends the program
     except socket.error as ERROR:  
         print("Error occurred while connecting to the server: ", ERROR)
@@ -109,7 +107,7 @@ def Main():
 # ****************************************************************  
  
     while True:
-        print("\nWelcome to Employment record centre!!!")
+        print("\n---------------------- Welcome to Employment record centre!!! ------------------------")
         while True:
             menu = input(""" 
             Please select an Option:
@@ -131,6 +129,7 @@ def Main():
 # ****************************************************************************    
         if menu == 1:
             #Displays employment records json data.
+            print("---------------------- Displaying employment records ----------------------")
             try:
                 #Making the path to the file OS agnostic
                 with open('EmploymentRecords.json', 'r') as f:
@@ -155,24 +154,20 @@ def Main():
                     search_person_within_records(records)
                 elif search_choice.lower() == "exit":
                     break
-# ****************************************************************  
-
-        # USER OPTION 2 - USER INPUTS DATA
-
-# ****************************************************************  
+# ----------------------------------------------------------------------
+# USER OPTION 2 - USER INPUTS DATA
+# ----------------------------------------------------------------------
         elif menu == 2:
             while True:
                 #Uses the Person Class made above, to specify user input, and put it in a dict form similar to JSON
-                print("To enter your employment records please enter the information")  
+                print("---------------------- To enter your employment records please enter the information ----------------------")  
                 person = Person()
                 person_dict = person.to_dict()
-
                 #Displays the new record in a pretty table for confirmation before adding to the JSON file
                 table = PrettyTable(['First Name', 'Last Name', 'Age', 'Employment Status'])
                 table.add_row([person_dict['First name'], person_dict['Last name'], person_dict['Age'], person_dict['Employment Status']])
                 print("\nHere is your new record:")
                 print(table)
-
                 #Prompts user to check if the record is correct, if it is it adds to JSON file, if not, it is deleted and user is prompted to add it again, this starts the while loop again.
                 confirm = input("Is this correct? (y/n): ")
                 if confirm.lower() not in ['y', 'yes']:
@@ -187,7 +182,6 @@ def Main():
                     print(f"Error occurred while trying to read records: {str(e)}")
                     people = []
                 
-
                 #Writes the newly inputted data into the JSON in dictonary format within the array.
                 people.append(person.to_dict())
                 try:
@@ -201,12 +195,9 @@ def Main():
                 continue_ = input("Would you like to add another employee record: y or n ") 
                 if continue_.upper() == "N":
                     break
-
-# ****************************************************************  
-
-        # USER OPTION 3 - EXITS PAGE
-
-# ****************************************************************  
+# ----------------------------------------------------------------------
+# USER OPTION 3 - EXITS PAGE
+# ----------------------------------------------------------------------
         elif menu ==  3: 
             print("NOT ready sorry")
             break
