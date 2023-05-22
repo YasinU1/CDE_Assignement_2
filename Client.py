@@ -140,15 +140,7 @@ def Main():
                 print(f"Error occurred while trying to read records: {str(e)}")
                 print("No records found.")
                 continue
-
-            #Displays JSON data in a prettytable format
-            #Creates table using the inputs as column titles.
-            table = PrettyTable(['First Name', 'Last Name', 'Age', 'Employment Status'])
-            #For loop to add each found result in a table from the JSON file
-            for record in records:
-                table.add_row([record['First name'], record['Last name'], record['Age'], record['Employment Status']])
-            print(table)
-
+            
             #Search functionality to search name within Records, loop to keep search going until exit, which sends them back to the menu
             while True:
                 #Shows a the pretty table of the JSON data
@@ -227,7 +219,6 @@ if __name__ == '__main__':
     Main()
 
 #TO DO LIST
-#Refactoring and Commenting Code
 #Browser displayed content(dev)
 #Heterogeneous systems architectures (i.e., different O/S) (dev) 
 #GUI or an output of stats and data.
