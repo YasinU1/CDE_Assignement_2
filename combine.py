@@ -60,7 +60,7 @@ class MainScreen(Screen):
         root.add_widget(logo)
         root.add_widget(anchor_layout)
         self.add_widget(root)
-    
+            
     # Sends user to Read screen
     def read_screen(self, *args):
         self.manager.current = 'read_screen'
@@ -84,21 +84,17 @@ class MainScreen(Screen):
 class ReadScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # Create the root widget with a vertical box layout
         root = BoxLayout(orientation='vertical')
 
         with root.canvas.before:
-            Color(1, 1, 1, 1)  # White background color
+            Color(1, 1, 1, 1)  
             self.rect = Rectangle(size=root.size, pos=root.pos)
             root.bind(size=self._update_rect, pos=self._update_rect)
 
-        # Title
         title = Label(text='See Employees Records', color=(0, 0, 0, 1), size_hint=(1, 0.3), font_size=42)
 
-        # User inputs
-        self.inputs = {}  # Dictionary to store references to the TextInput widgets
+        self.inputs = {}
 
-        # Search Bar
         anchor_search = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.3))
         search_container = BoxLayout(orientation='horizontal', spacing=20, size_hint=(0.5, None), height=70)
         search_label = Label(text='Search:', color=(0, 0, 0, 1), size_hint=(0.2, None), height=30)
@@ -109,31 +105,20 @@ class ReadScreen(Screen):
         clear_button = Button(text='Clear', size_hint=(0.2, None), height=32)
         clear_button.bind(on_press=lambda x: self.search_records(" "))
 
-        # Display JSON file
         anchor_json = AnchorLayout(anchor_x='center', anchor_y='center', size_hint=(1, 0.4))
-        try:
-            # Making the path to the file OS agnostic
-            with open('EmploymentRecords.json', 'r') as f:
-                self.records = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            # Sends error message if no records or JSON are found
-            print(f"Error occurred while trying to read records: {str(e)}")
-            print("No records found.")
+
+        self.records = []
 
         self.json_layout = GridLayout(cols=4)
         headers = ['First Name', 'Last Name', 'Age', 'Employee Status']
         for header in headers:
-            self.json_layout.add_widget(Label(text=header, bold=True, color=(0, 0, 0, 1)))  # Add header labels to the layout
-        
-        self.display_records()  # Display all records initially
+            self.json_layout.add_widget(Label(text=header, bold=True, color=(0, 0, 0, 1)))
 
-        # Exit buttons
         anchor_layout_exit = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=120)
         buttons_container = BoxLayout(orientation='vertical', size_hint=(0.3, 0.3))
         exitBut = Button(text='Go back to home!')
         exitBut.bind(on_press=self.main_screen)
 
-        # Add to widget containers
         search_container.add_widget(search_label)
         search_container.add_widget(search_input)
         search_container.add_widget(search_button)
@@ -145,7 +130,6 @@ class ReadScreen(Screen):
         buttons_container.add_widget(exitBut)
         anchor_layout_exit.add_widget(buttons_container)
 
-        # Add to root widget
         root.add_widget(title)
         root.add_widget(anchor_search)
         root.add_widget(anchor_json)
@@ -153,22 +137,30 @@ class ReadScreen(Screen):
         
         self.add_widget(root)
 
-    # Sends user to Write screen
+    def on_enter(self, *args):
+        super().on_enter(*args)
+        try:
+            with open('EmploymentRecords.json', 'r') as f:
+                self.records = json.load(f)
+                self.display_records()
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            print(f"Error occurred while trying to read records: {str(e)}")
+            print("No records found.")
+            self.records = []
+
     def main_screen(self, *args):
         self.manager.current = 'main_screen'
-    
-    # Update the size and position of the rectangle
+
     def _update_rect(self, instance, value):
         self.rect.size = instance.size
         self.rect.pos = instance.pos
 
-    # Display all records
     def display_records(self):
-        self.json_layout.clear_widgets()  # Clear the current widgets
+        self.json_layout.clear_widgets()
 
         headers = ['First Name', 'Last Name', 'Age', 'Employment Status']
         for header in headers:
-            self.json_layout.add_widget(Label(text=header, bold=True, color=(0, 0, 0, 1)))  # Add header labels to the layout
+            self.json_layout.add_widget(Label(text=header, bold=True, color=(0, 0, 0, 1)))
 
         for record in self.records:
             first_name = record['First Name']
@@ -181,9 +173,8 @@ class ReadScreen(Screen):
             self.json_layout.add_widget(Label(text=age, color=(0, 0, 0, 1)))
             self.json_layout.add_widget(Label(text=employment_status, color=(0, 0, 0, 1)))
 
-    # Search and display records based on search value
     def search_records(self, search_value):
-        if search_value.strip():  # If search_value is not empty or contains only spaces
+        if search_value.strip(): 
             search_results = []
             for record in self.records:
                 first_name = record['First Name']
@@ -191,19 +182,15 @@ class ReadScreen(Screen):
                 age = str(record['Age'])
                 employment_status = record['Employment Status']
 
-                # Check if any field matches the search value
                 if search_value.lower() in first_name.lower() or \
-                        search_value.lower() in last_name.lower() or \
-                        search_value.lower() in age.lower() or \
-                        search_value.lower() in employment_status.lower():
+                        search_value.lower() in last_name.lower():
                     search_results.append(record)
 
-            # Update the display with search results
-            self.json_layout.clear_widgets()  # Clear the current widgets
+            self.json_layout.clear_widgets()
 
             headers = ['First Name', 'Last Name', 'Age', 'Employment Status']
             for header in headers:
-                self.json_layout.add_widget(Label(text=header, bold=True, color=(0, 0, 0, 1)))  # Add header labels to the layout
+                self.json_layout.add_widget(Label(text=header, bold=True, color=(0, 0, 0, 1)))
 
             for record in search_results:
                 first_name = record['First Name']
@@ -216,8 +203,7 @@ class ReadScreen(Screen):
                 self.json_layout.add_widget(Label(text=age, color=(0, 0, 0, 1)))
                 self.json_layout.add_widget(Label(text=employment_status, color=(0, 0, 0, 1)))
         else:
-            self.display_records()  # Display all records when search_value is empty or contains only spaces
-            # Clear the input values
+            self.display_records()
             self.inputs['search'].text = ''
 
 # ------------------------------------------------------------------------------------
@@ -493,3 +479,9 @@ class MyApp(App):
 
 if __name__ == '__main__':
     MyApp().run()
+
+
+# GUI needs to connect to server,
+# GUI connect to server message
+# Input validation
+# Edit Readme

@@ -49,8 +49,8 @@ class Person:
     # Return dictionary representation of person similar to JSON
     def to_dict(self):   
         return {
-            'First name': self.first_name,
-            'Last name': self.surname,
+            'First Name': self.first_name,
+            'Last Name': self.surname,
             'Age': self.age,
             'Employment Status': self.employment_record
         }
@@ -66,7 +66,7 @@ def search_person_within_records(records):
         #For loop and if statment to search for first name, 
         found_records = []
         for record in records:
-            if record['First name'].lower() == search_term.lower():
+            if record['First Name'].lower() == search_term.lower():
                 found_records.append(record)
         # Checks if any of the same records of first name are found, if yes, displays pretty table of matching results, similar to main display table.
         if found_records:
@@ -74,11 +74,11 @@ def search_person_within_records(records):
             table = PrettyTable(['First Name', 'Last Name', 'Age', 'Employment Status'])
             #For loop to add each found result in a table from the JSON file
             for record in found_records:
-                table.add_row([record['First name'], record['Last name'], record['Age'], record['Employment Status']])
+                table.add_row([record['First Name'], record['Last Name'], record['Age'], record['Employment Status']])
             print(table)
         else:
             #If no result is found prints this message
-            print("No person found with the given first name.")
+            print("No person found with the given first Name.")
             continue
 
 # ****************************************************************  
@@ -145,7 +145,7 @@ def Main():
                 #Shows a the pretty table of the JSON data
                 table = PrettyTable(['First Name', 'Last Name', 'Age', 'Employment Status'])
                 for record in records:
-                    table.add_row([record['First name'], record['Last name'], record['Age'], record['Employment Status']])
+                    table.add_row([record['First Name'], record['Last Name'], record['Age'], record['Employment Status']])
                 print(table)
                 #Prompts the user to type search to begin using the search function or exit back to the menu
                 search_choice = input("Type 'search' to search for a person, or type 'exit' to return to the menu: ")
@@ -165,7 +165,7 @@ def Main():
                 person_dict = person.to_dict()
                 #Displays the new record in a pretty table for confirmation before adding to the JSON file
                 table = PrettyTable(['First Name', 'Last Name', 'Age', 'Employment Status'])
-                table.add_row([person_dict['First name'], person_dict['Last name'], person_dict['Age'], person_dict['Employment Status']])
+                table.add_row([person_dict['First Name'], person_dict['Last Name'], person_dict['Age'], person_dict['Employment Status']])
                 print("\nHere is your new record:")
                 print(table)
                 #Prompts user to check if the record is correct, if it is it adds to JSON file, if not, it is deleted and user is prompted to add it again, this starts the while loop again.
