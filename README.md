@@ -15,5 +15,5 @@ You will need to run the server first, to do this run this in the terminal
 python3 Server.py
 
 Then open a new terminal and Run the Client
-python3 Client.py
+python3 GUI.py
 And now the programme is running, where you can select one of the 3 options (1,2,3)
