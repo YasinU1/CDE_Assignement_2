@@ -15,6 +15,7 @@ from kivy.graphics import Color, Rectangle
 import prettytable
 import socket
 import json 
+import re
 
 # ------------------------------------------------------------------------------------
 # USER OPTION 1 - SER WELCOME MENU
@@ -29,9 +30,13 @@ class MainScreen(Screen):
             Color(1, 1, 1, 1)  # White background color
             self.rect = Rectangle(size=root.size, pos=root.pos)
             root.bind(size=self._update_rect, pos=self._update_rect)
-        
+
         # Title
-        title = Label(text='', color=(0, 0, 0, 1), size_hint=(1, 0.3), font_size=42)
+        title_box = BoxLayout(orientation='vertical', size_hint=(1, 0.3))
+        title_label = Label(text='', color=(0, 0, 0, 1), font_size=42)
+        subtitle_label = Label(text='You have connected to the Server', color=(0, 0, 0, 1), font_size=30)
+        title_box.add_widget(title_label)
+        title_box.add_widget(subtitle_label)
 
         # Logo 
         logo = Image(source='recordImage.png', size_hint=(1, 0.5))
@@ -58,7 +63,7 @@ class MainScreen(Screen):
         anchor_layout.add_widget(buttons_container)
 
         # Add to SCREEN widget
-        root.add_widget(title)
+        root.add_widget(title_box)
         root.add_widget(logo)
         root.add_widget(anchor_layout)
         self.add_widget(root)
@@ -71,14 +76,14 @@ class MainScreen(Screen):
         try:
             s.connect((host, port))
             print("\n---------------------- Connected to the server successfully! ----------------------")
-            title.text = 'Employee Records!!!'
+            title_label.text = 'Welcome to Employee Records!!!'
             button1.disabled = False
             button2.disabled = False
         # If the server is not connected, it shows an error message
         except socket.error as ERROR:
-            title.text = 'Error: Not connected to the server'
+            title_label.text = 'Error: Not connected to the server'
             print("Error occurred while connecting to the server: ", ERROR)
-    
+
     # Sends user to Read screen
     def read_screen(self, *args):
         self.manager.current = 'read_screen'
@@ -244,20 +249,20 @@ class ReadScreen(Screen):
 class WriteScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # Create the root widget with a vertical box layout
         root = BoxLayout(orientation='vertical')
 
         with root.canvas.before:
-            Color(1, 1, 1, 1)  # White background color
+            Color(1, 1, 1, 1)
             self.rect = Rectangle(size=root.size, pos=root.pos)
             root.bind(size=self._update_rect, pos=self._update_rect)
 
-        # Title
         title = Label(text='Add an Employee Records', color=(0, 0, 0, 1), size_hint=(1, 0.1), font_size=42)
+
+        # Add an error message label to your layout
+        self.error_message = Label(text='', color=(1, 0, 0, 1), size_hint=(1, 0.05))
 
         # User inputs
         self.inputs = {}  # Dictionary to store references to the TextInput widgets
-
         anchor_firstName = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=40)
         firstName_container = BoxLayout(orientation='horizontal', size_hint=(0.5, None), height=70)
         firstName_label = Label(text='First Name:', color=(0, 0, 0, 1), size_hint=(0.5, None), height=30)
@@ -333,6 +338,7 @@ class WriteScreen(Screen):
 
         # Add to root widget
         root.add_widget(title)
+        root.add_widget(self.error_message)
         root.add_widget(anchor_firstName)
         root.add_widget(anchor_lastName)
         root.add_widget(anchor_age)
@@ -345,32 +351,36 @@ class WriteScreen(Screen):
 
     # Sends user to Display screen
     def display_screen(self, *args):
-        # Get the input values
         first_name = self.inputs['firstName'].text
         last_name = self.inputs['lastName'].text
         age = self.inputs['age'].text
         status = "YES" if self.inputs['status'].state == "down" else "NO"
 
-        # Clear the input values
+        if not re.match("^[A-Za-z]*$", first_name) or not first_name:
+            self.error_message.text = "Invalid first name. Please enter a valid first name."
+            return
+        if not re.match("^[A-Za-z]*$", last_name) or not last_name:
+            self.error_message.text = "Invalid last name. Please enter a valid last name."
+            return
+        if not re.match("^(0?[1-9]|[1-9][0-9]|1[01][0-9]|120)$", age) or not age:
+            self.error_message.text = "Invalid age. Please enter a valid age between 1 to 120."
+            return
+
+        self.error_message.text = ''
+
         self.inputs['firstName'].text = ''
         self.inputs['lastName'].text = ''
         self.inputs['age'].text = ''
         self.inputs['status'].state = 'normal'
 
-        # Get the reference to the DisplayScreen
         display_screen = self.manager.get_screen('display_screen')
-
-        # Pass the input values to the DisplayScreen
         display_screen.set_data(first_name, last_name, age, status)
         self.manager.current = 'display_screen'
 
-
-    # Sends user to Write screen
     def main_screen(self, *args):
         self.manager.current = 'main_screen'
 
     def _update_rect(self, instance, value):
-        # Update the size and position of the rectangle
         self.rect.size = instance.size
         self.rect.pos = instance.pos
 
