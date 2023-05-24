@@ -39,6 +39,7 @@ class MainScreen(Screen):
         title_box.add_widget(subtitle_label)
 
         # Logo 
+        anchor_image = AnchorLayout(anchor_x='center', anchor_y='center')
         logo = Image(source='recordImage.png', size_hint=(1, 0.5))
 
         # Anchor (adds center buttons container)
@@ -61,10 +62,11 @@ class MainScreen(Screen):
         buttons_container.add_widget(button2)
         buttons_container.add_widget(button3)
         anchor_layout.add_widget(buttons_container)
+        anchor_image.add_widget(logo)
 
         # Add to SCREEN widget
         root.add_widget(title_box)
-        root.add_widget(logo)
+        root.add_widget(anchor_image)
         root.add_widget(anchor_layout)
         self.add_widget(root)
 
