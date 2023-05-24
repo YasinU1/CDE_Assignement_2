@@ -18,6 +18,7 @@ def send_messages_from_server(c):
             break       
         #If the response the server gets is "Data added to JSON" then a respective message gets sent
         if response_data == "Data added to JSON":
+            print("Client has sent Employee records")
             print("Data has been added to the JSON file!")
         else:
             print("The connected user says: " + response_data)

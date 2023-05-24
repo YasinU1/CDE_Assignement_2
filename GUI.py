@@ -397,6 +397,18 @@ class WriteScreen(Screen):
         self.inputs['age'].text = ''
         self.inputs['status'].state = 'normal'
 
+        # Same host, port, and socket code as the server to create the connection
+        host = '127.0.0.1'
+        port = 8989
+        s = socket.socket()
+        # Connection to server
+        try:
+            s.connect((host, port))
+            s.send("Data added to JSON".encode('utf-8'))  # Send message to server
+        # If the server is not connected, it shows an error message
+        except socket.error as ERROR:
+            print("Error occurred while connecting to the server: ", ERROR)
+
         display_screen = self.manager.get_screen('display_screen')
         display_screen.set_data(first_name, last_name, age, status)
         self.manager.current = 'display_screen'
@@ -512,6 +524,7 @@ class DisplayScreen(Screen):
         try:
             with open('EmploymentRecords.json', 'w') as f:
                 json.dump(people, f)
+                print("Sending Employee Records to Server")
                 print("Employees records have been successfully added to the JSON file.")
         except Exception as e:
             print(f"Error occurred while trying to write to file: {str(e)}")
