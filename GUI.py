@@ -269,19 +269,19 @@ class WriteScreen(Screen):
         # User inputs
         self.inputs = {}  # Dictionary to store references to the TextInput widgets
         userInputs_container = BoxLayout(orientation='vertical', size_hint=(1, 0.40))
-        anchor_firstName = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.1))
+        anchor_firstName = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.2))
         firstName_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.5))
         firstName_label = Label(text='First Name:', color=(0, 0, 0, 1), size_hint=(0.5, 1))
         firstName_input = TextInput(size_hint=(0.5, 1))
         self.inputs['firstName'] = firstName_input  # Store the reference
 
-        anchor_lastName = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.1))
+        anchor_lastName = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.2))
         lastName_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.5))
         lastName_label = Label(text='Last Name:', color=(0, 0, 0, 1), size_hint=(0.5, 1))
         lastName_input = TextInput(size_hint=(0.5, 1))
         self.inputs['lastName'] = lastName_input  # Store the reference
 
-        anchor_age = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.1))
+        anchor_age = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.2))
         age_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.55))
         age_label = Label(text='Age:', color=(0, 0, 0, 1), size_hint=(0.5, 1))
         age_input = TextInput(size_hint=(0.5, 1))
@@ -406,20 +406,20 @@ class DisplayScreen(Screen):
             root.bind(size=self._update_rect, pos=self._update_rect)
 
         # Title
-        title = Label(text='Employee Records', color=(0, 0, 0, 1), size_hint=(1, None), height=150, font_size=42)
+        title = Label(text='New Employee Records', color=(0, 0, 0, 1), size_hint=(1, 0.3), font_size=42)
 
         # Displayed data
-        anchor_data_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=250)
-        self.data_label = Label(text='', color=(0, 0, 0, 1), size_hint=(1, 1), font_size=18)
+        anchor_data_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint=(1, 0.5))
+        self.data_label = Label(text='', color=(0, 0, 0, 1), size_hint=(1, 1), font_size=34)
         
         # Question
         anchor_question_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=50)
         question_container = BoxLayout(orientation='vertical', size_hint=(0.5, None), height=10)
-        question_label = Label(text='Is your information correct?', color=(0, 0, 0, 1), font_size=20)
+        question_label = Label(text='Is your information correct?', color=(0, 0, 0, 1), font_size=28)
 
         # User options
-        anchor_button_layout = AnchorLayout(anchor_x='center', anchor_y='top')
-        buttons_container = BoxLayout(orientation='horizontal', size_hint=(0.5, None), height=50, spacing=25)
+        anchor_button_layout = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.4))
+        buttons_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.2), spacing=25)
         # Option 1 - YES
         yes_button = Button(text='YES')
         yes_button.bind(on_press=self.Add_To_Json)
@@ -444,7 +444,7 @@ class DisplayScreen(Screen):
 
     # Set the displayed data
     def set_data(self, first_name, last_name, age, status):
-        data = f"First Name: {first_name}\nLast Name: {last_name}\nAge: {age}\nStatus: {status}"
+        data = f"First Name: {first_name}\nLast Name: {last_name}\nAge: {age}\nEmployment Status: {status}"
         self.data_label.text = data
 
     # Sends user to Write screen
