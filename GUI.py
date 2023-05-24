@@ -500,7 +500,7 @@ class DisplayScreen(Screen):
         self.rect.pos = instance.pos
 
 # Main Screen
-class MyApp(App):
+class EmployeeRecordsApp(App):
     def build(self):  
         
         # Create the screen manager
@@ -522,4 +522,4 @@ class MyApp(App):
     
 
 if __name__ == '__main__':
-    MyApp().run()
+    EmployeeRecordsApp().run()
