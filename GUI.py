@@ -128,12 +128,12 @@ class ReadScreen(Screen):
         # Search Bar
         anchor_search = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.1))
         search_container = BoxLayout(orientation='horizontal', spacing=20, size_hint=(0.5, 0.1))
-        search_label = Label(text='Search:', color=(0, 0, 0, 1), size_hint=(0.2, None), height=30)
+        search_label = Label(text='Search:', color=(0, 0, 0, 1), size_hint=(0.5, None), height=50)
         search_input = TextInput(size_hint=(0.5, None), height=50)
         self.inputs['search'] = search_input
-        search_button = Button(text='GO!', size_hint=(0.2, None), height=32)
+        search_button = Button(text='GO!', size_hint=(0.2, None), height=50)
         search_button.bind(on_press=lambda x: self.search_records(search_input.text))
-        clear_button = Button(text='Clear', size_hint=(0.2, None), height=32)
+        clear_button = Button(text='Clear', size_hint=(0.2, None), height=50)
         clear_button.bind(on_press=lambda x: self.search_records(" "))
 
         # Display JSON file
@@ -155,7 +155,7 @@ class ReadScreen(Screen):
         self.display_records()  # Display all records initially
 
         # Exit buttons
-        anchor_layout_exit = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=120)
+        anchor_layout_exit = AnchorLayout(anchor_x='center', anchor_y='center', size_hint=(1, 0.2))
         buttons_container = BoxLayout(orientation='vertical', size_hint=(0.3, 0.3))
         exitBut = Button(text='Go back to home!')
         exitBut.bind(on_press=self.main_screen)
