@@ -32,11 +32,10 @@ class MainScreen(Screen):
             root.bind(size=self._update_rect, pos=self._update_rect)
 
         # Title
-        title_box = BoxLayout(orientation='vertical', size_hint=(1, 0.3))
+        anchor_title = AnchorLayout(anchor_x='center', anchor_y='center')
+        title_box = BoxLayout(orientation='vertical', spacing=10, size_hint=(1, 0.3))
         title_label = Label(text='', color=(0, 0, 0, 1), font_size=42)
         subtitle_label = Label(text='You have connected to the Server', color=(0, 0, 0, 1), font_size=30)
-        title_box.add_widget(title_label)
-        title_box.add_widget(subtitle_label)
 
         # Logo 
         anchor_image = AnchorLayout(anchor_x='center', anchor_y='center')
@@ -58,14 +57,17 @@ class MainScreen(Screen):
         button3.bind(on_release=self.exit_app)
 
         # Anchor -> Buttons Container -> Buttons
+        title_box.add_widget(title_label)
+        title_box.add_widget(subtitle_label)
+        anchor_title.add_widget(title_box)
+        anchor_image.add_widget(logo)
         buttons_container.add_widget(button1)
         buttons_container.add_widget(button2)
         buttons_container.add_widget(button3)
         anchor_layout.add_widget(buttons_container)
-        anchor_image.add_widget(logo)
-
+        
         # Add to SCREEN widget
-        root.add_widget(title_box)
+        root.add_widget(anchor_title)
         root.add_widget(anchor_image)
         root.add_widget(anchor_layout)
         self.add_widget(root)
