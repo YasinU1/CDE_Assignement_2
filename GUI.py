@@ -268,44 +268,44 @@ class WriteScreen(Screen):
 
         # User inputs
         self.inputs = {}  # Dictionary to store references to the TextInput widgets
-        userInputs_container = BoxLayout(orientation='vertical', size_hint=(1, 0.5))
-        anchor_firstName = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.15))
-        firstName_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.8))
-        firstName_label = Label(text='First Name:', color=(0, 0, 0, 1), size_hint=(0.5, 0.8))
-        firstName_input = TextInput(size_hint=(0.5, 0.8))
+        userInputs_container = BoxLayout(orientation='vertical', size_hint=(1, 0.40))
+        anchor_firstName = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.10))
+        firstName_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.55))
+        firstName_label = Label(text='First Name:', color=(0, 0, 0, 1), size_hint=(0.5, 0.65))
+        firstName_input = TextInput(size_hint=(0.5, 0.65))
         self.inputs['firstName'] = firstName_input  # Store the reference
 
-        anchor_lastName = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.15))
-        lastName_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.8))
-        lastName_label = Label(text='Last Name:', color=(0, 0, 0, 1), size_hint=(0.5, 0.8))
-        lastName_input = TextInput(size_hint=(0.5, 0.8))
+        anchor_lastName = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.10))
+        lastName_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.55))
+        lastName_label = Label(text='Last Name:', color=(0, 0, 0, 1), size_hint=(0.5, 0.65))
+        lastName_input = TextInput(size_hint=(0.5, 0.65))
         self.inputs['lastName'] = lastName_input  # Store the reference
 
-        anchor_age = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.15))
-        age_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.8))
-        age_label = Label(text='Age:', color=(0, 0, 0, 1), size_hint=(0.5, 0.8))
-        age_input = TextInput(size_hint=(0.5, 0.8))
+        anchor_age = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.10))
+        age_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.55))
+        age_label = Label(text='Age:', color=(0, 0, 0, 1), size_hint=(0.5, 0.65))
+        age_input = TextInput(size_hint=(0.5, 0.65))
         self.inputs['age'] = age_input  # Store the reference
 
-        anchor_status = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.15))
-        status_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.8))
+        anchor_status = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.10))
+        status_container = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.55))
         status_label = Label(text='Employee Status:', color=(0, 0, 0, 1), size_hint=(0.5, 0.9))
 
         # Create a custom ToggleButton class with radio button behavior
         class RadioButton(ToggleButton):
             group = StringProperty('')
 
-        no_option = RadioButton(state='down', group='my_group', size_hint=(0.25, 1))
-        no_label = Label(text='NO', size_hint=(0.3, 1),  color=(0, 0, 0, 1), font_size=32)
+        no_option = RadioButton(state='down', group='my_group', size_hint=(0.15, 1))
+        no_label = Label(text='NO', size_hint=(0.20, 0.7),  color=(0, 0, 0, 1), font_size=32)
 
-        yes_option = RadioButton(group='my_group', size_hint=(0.25, 1))
-        yes_label = Label(text='YES', size_hint=(0.3, 1), color=(0, 0, 0, 1), font_size=32)
+        yes_option = RadioButton(group='my_group', size_hint=(0.15, 1))
+        yes_label = Label(text='YES', size_hint=(0.20, 0.7), color=(0, 0, 0, 1), font_size=32)
 
         # Store the reference to the 'status' input field
         self.inputs['status'] = yes_option
 
         # Submit buttons
-        anchor_layout_submit = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.15))
+        anchor_layout_submit = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.10))
         buttonSub_container = BoxLayout(orientation='vertical', size_hint=(0.5, 0.6))
         subBut = Button(text='Submit')
         subBut.bind(on_press=self.display_screen)
