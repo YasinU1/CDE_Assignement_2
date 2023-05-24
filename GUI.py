@@ -260,13 +260,15 @@ class WriteScreen(Screen):
             self.rect = Rectangle(size=root.size, pos=root.pos)
             root.bind(size=self._update_rect, pos=self._update_rect)
 
-        title = Label(text='Add an Employee Records', color=(0, 0, 0, 1), size_hint=(1, 0.1), font_size=42)
+        # Title
+        title = Label(text='Add an Employee Records', color=(0, 0, 0, 1), size_hint=(1, 0.3), font_size=42)
 
         # Add an error message label to your layout
         self.error_message = Label(text='', color=(1, 0, 0, 1), size_hint=(1, 0.05))
 
         # User inputs
         self.inputs = {}  # Dictionary to store references to the TextInput widgets
+        userInputs_container = BoxLayout(orientation='vertical', size_hint=(1, 0.8))
         anchor_firstName = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=40)
         firstName_container = BoxLayout(orientation='horizontal', size_hint=(0.5, None), height=70)
         firstName_label = Label(text='First Name:', color=(0, 0, 0, 1), size_hint=(0.5, None), height=30)
@@ -309,7 +311,7 @@ class WriteScreen(Screen):
         subBut.bind(on_press=self.display_screen)
 
         # Exit buttons
-        anchor_layout_exit = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=120)
+        anchor_layout_exit = AnchorLayout(anchor_x='center', anchor_y='center', size_hint=(1, 0.2))
         buttons_container = BoxLayout(orientation='vertical', size_hint=(0.3, 0.3), spacing=5)
         exitBut = Button(text='Go back to home!')
         exitBut.bind(on_press=self.main_screen)
@@ -318,14 +320,17 @@ class WriteScreen(Screen):
         firstName_container.add_widget(firstName_label)
         firstName_container.add_widget(firstName_input)
         anchor_firstName.add_widget(firstName_container)
+        userInputs_container.add_widget(anchor_firstName)
 
         lastName_container.add_widget(lastName_label)
         lastName_container.add_widget(lastName_input)
         anchor_lastName.add_widget(lastName_container)
+        userInputs_container.add_widget(anchor_lastName)
 
         age_container.add_widget(age_label)
         age_container.add_widget(age_input)
         anchor_age.add_widget(age_container)
+        userInputs_container.add_widget(anchor_age)
 
         status_container.add_widget(status_label)
         status_container.add_widget(no_label)
@@ -333,9 +338,11 @@ class WriteScreen(Screen):
         status_container.add_widget(yes_label)
         status_container.add_widget(yes_option)
         anchor_status.add_widget(status_container)
+        userInputs_container.add_widget(anchor_status)
 
         buttonSub_container.add_widget(subBut)
         anchor_layout_submit.add_widget(buttonSub_container)
+        userInputs_container.add_widget(anchor_layout_submit)
 
         buttons_container.add_widget(exitBut)
         anchor_layout_exit.add_widget(buttons_container)
@@ -343,11 +350,7 @@ class WriteScreen(Screen):
         # Add to root widget
         root.add_widget(title)
         root.add_widget(self.error_message)
-        root.add_widget(anchor_firstName)
-        root.add_widget(anchor_lastName)
-        root.add_widget(anchor_age)
-        root.add_widget(anchor_status)
-        root.add_widget(anchor_layout_submit)
+        root.add_widget(userInputs_container)
         root.add_widget(anchor_layout_exit)
 
         self.add_widget(root)
