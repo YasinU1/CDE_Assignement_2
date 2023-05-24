@@ -147,6 +147,8 @@ class ReadScreen(Screen):
             print(f"Error occurred while trying to read records: {str(e)}")
             print("No records found.")
 
+        self.load_records()  # Load JSON file at initialization
+
         self.json_layout = GridLayout(cols=4)
         headers = ['First Name', 'Last Name', 'Age', 'Employee Status']
         for header in headers:
@@ -180,6 +182,20 @@ class ReadScreen(Screen):
         
         self.add_widget(root)
 
+    def on_enter(self, *args):
+            self.load_records()  # Reload the JSON file when entering the screen
+            self.display_records()  # Refresh the display
+    
+    # Method to load the JSON file
+    def load_records(self):
+        try:
+            with open('EmploymentRecords.json', 'r') as f:
+                self.records = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            print(f"Error occurred while trying to read records: {str(e)}")
+            print("No records found.")
+            self.records = []  # Ensure records is a list, even if loading failed
+
     # Sends user to Write screen
     def main_screen(self, *args):
         self.manager.current = 'main_screen'
@@ -210,6 +226,7 @@ class ReadScreen(Screen):
 
     # Search and display records based on search value
     def search_records(self, search_value):
+        self.load_records()  # Reload the JSON file
         if search_value.strip():  # If search_value is not empty or contains only spaces
             search_results = []
             for record in self.records:
