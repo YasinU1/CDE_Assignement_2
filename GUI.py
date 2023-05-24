@@ -38,8 +38,8 @@ class MainScreen(Screen):
         subtitle_label = Label(text='You have connected to the Server', color=(0, 0, 0, 1), font_size=30)
 
         # Logo 
-        anchor_image = AnchorLayout(anchor_x='center', anchor_y='center')
-        logo = Image(source='recordImage.png', size_hint=(1, 0.5))
+        anchor_image = AnchorLayout(anchor_x='center', anchor_y='center', size_hint=(1, 0.3))
+        logo = Image(source='recordImage.png', size_hint=(1, 1.6))
 
         # Anchor (adds center buttons container)
         anchor_layout = AnchorLayout(anchor_x='center', anchor_y='center')
@@ -129,7 +129,7 @@ class ReadScreen(Screen):
         anchor_search = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, 0.3))
         search_container = BoxLayout(orientation='horizontal', spacing=20, size_hint=(0.5, None), height=70)
         search_label = Label(text='Search:', color=(0, 0, 0, 1), size_hint=(0.2, None), height=30)
-        search_input = TextInput(size_hint=(0.5, None), height=30)
+        search_input = TextInput(size_hint=(0.5, None), height=35)
         self.inputs['search'] = search_input
         search_button = Button(text='GO!', size_hint=(0.2, None), height=32)
         search_button.bind(on_press=lambda x: self.search_records(search_input.text))
