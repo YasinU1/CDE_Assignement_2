@@ -469,7 +469,7 @@ class DisplayScreen(Screen):
                 last_name = line.split(': ')[1]
             elif line.startswith('Age:'):
                 age = line.split(': ')[1]
-            elif line.startswith('Status:'):
+            elif line.startswith('Employment Status:'):
                 status = line.split(': ')[1]
 
         # Create a dictionary for the person's information
@@ -495,7 +495,7 @@ class DisplayScreen(Screen):
         try:
             with open('EmploymentRecords.json', 'w') as f:
                 json.dump(people, f)
-                print("Data added to JSON")
+                print("Employees records have been successfully added to the JSON file.")
         except Exception as e:
             print(f"Error occurred while trying to write to file: {str(e)}")
         
