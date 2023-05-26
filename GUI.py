@@ -47,10 +47,10 @@ class MainScreen(Screen):
         buttons_container = BoxLayout(orientation='vertical', size_hint=(0.5, 0.5), spacing=5)
 
         # Option 1 - READ
-        button1 = Button(text='View Employee Records', disabled=True)
+        button1 = Button(text='View Employee Records', disabled=False)
         button1.bind(on_press=self.read_screen)
         # Option 2 - WRITE
-        button2 = Button(text='Add Employee Records', disabled=True)
+        button2 = Button(text='Add Employee Records', disabled=False)
         button2.bind(on_press=self.write_screen)
         # Option 3 - EXIT
         button3 = Button(text='Exit')
@@ -81,11 +81,11 @@ class MainScreen(Screen):
             s.connect((host, port))
             print("\n---------------------- Connected to the server successfully! ----------------------")
             title_label.text = 'Welcome to Employee Records!!!'
-            button1.disabled = False
-            button2.disabled = False
         # If the server is not connected, it shows an error message
         except socket.error as ERROR:
             title_label.text = 'Error: Not connected to the server'
+            button1.disabled = True
+            button2.disabled = True
             print("Error occurred while connecting to the server: ", ERROR)
 
     # Sends user to Read screen
