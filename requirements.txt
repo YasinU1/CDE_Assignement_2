@@ -1,0 +1,5 @@
+kivy==2.2.0
+json==0.0.0
+prettytable==latest
+socket==0.0.0
+re==0.0.0
