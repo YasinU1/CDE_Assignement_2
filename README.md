@@ -21,11 +21,11 @@ You will need to run the server first, to do this run this in the terminal
 ""python3 Server.py""
 
 Then open a new terminal and Run the Client GUI
-""python3 GUI.py""
+""python3 Client.py""
 And now the programme is running, you are presented with an interface
 
 
-We have also included our old Client(old).py file which includes our in-terminal application before we had a GUI, this had all of the required features and the code was just transfered to our GUI file to perform the functions, 
+We have also included our old Client(old).py file which includes our in-terminal application before we had a Kivy GUI, this had all of the required features and the code was just transfered to our Kivy GUI file to perform the functions, 
 
 To try out our old client run the server first and then the client
 

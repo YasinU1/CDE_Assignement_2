@@ -209,10 +209,3 @@ def Main():
 if __name__ == '__main__':
     Main()
 
-#TO DO LIST
-#Browser displayed content(dev)
-#Heterogeneous systems architectures (i.e., different O/S) (dev) 
-#GUI or an output of stats and data.
-    
-
-

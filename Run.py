@@ -5,7 +5,7 @@ def main():
     python_command = 'python3' if platform.system() == 'Darwin' else 'python'
     
     server_process = subprocess.Popen([python_command, 'Server.py'])
-    gui_process = subprocess.Popen([python_command, 'GUI.py'])
+    gui_process = subprocess.Popen([python_command, 'Client.py'])
 
     server_process.communicate()
     gui_process.communicate()
